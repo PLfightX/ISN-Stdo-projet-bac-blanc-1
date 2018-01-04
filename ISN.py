@@ -45,6 +45,6 @@ while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l
                                 copy[copy.index(propls[lettre])] = "."
                 print("".join(reponse))
                 if "".join(reponse) == proposition: #on vérifie si la proposition apr?s traitement est le mot qu'on doit deviner
-                        print("Bien jou? !")
+                        print("Bien joué !")
                         break
         sortie = int(input("Voulez vous rejouer [1] ou quitter [0] ? ")) #On demande au joueur si on veut rejouer
