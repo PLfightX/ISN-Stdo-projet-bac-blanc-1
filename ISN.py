@@ -25,9 +25,9 @@ while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l
         mot = ""
         while not(verif(mot)): #le joueur 1 choisis un mot qu'on vérifie avec la fonction 'verif'
                 mot = getpass.getpass("{0} entre le mot de 7 lettres : ".format(joueur1)).upper()  #on utilise getpass pour ne pas afficher le mot
-        print("Mot valid?")
+        print("Mot validé")
 
-        print("{0}, ? toi".format(joueur2)) #c'est maintenant au joueur 2 de jouer
+        print("{0}, à toi".format(joueur2)) #c'est maintenant au joueur 2 de jouer
         for essais in range(6): #on créé une boucle avec 6 essais maximum
                 proposition = ""
                 reponse = ["."]*7
@@ -44,7 +44,7 @@ while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l
                                 reponse[lettre] = propls[lettre].lower()
                                 copy[copy.index(propls[lettre])] = "."
                 print("".join(reponse))
-                if "".join(reponse) == proposition: #on vérifie si la proposition apr?s traitement est le mot qu'on doit deviner
+                if "".join(reponse) == proposition: #on vérifie si la proposition après traitement est le mot qu'on doit deviner
                         print("Bien joué !")
                         break
         sortie = int(input("Voulez vous rejouer [1] ou quitter [0] ? ")) #On demande au joueur si on veut rejouer
