@@ -24,7 +24,7 @@ while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l
 
         mot = ""
         while not(verif(mot)): #le joueur 1 choisis un mot qu'on vérifie avec la fonction 'verif'
-                mot = input("{0} entre le mot de 7 lettres : ".format(joueur1)).upper()  #on utilise getpass pour ne pas afficher le mot
+                mot = getpass.getpass("{0} entre le mot de 7 lettres : ".format(joueur1)).upper()  #on utilise getpass pour ne pas afficher le mot
         print("Mot validé")
 
         print("{0}, à toi".format(joueur2)) #c'est maintenant au joueur 2 de jouer
