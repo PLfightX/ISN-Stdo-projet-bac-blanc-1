@@ -17,7 +17,7 @@ def verif(mot): #on créé une fonction que vérifie si le mot est "correct": il
 
 sortie = 1
 while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l'on l'arr?te
-         print("Entrez votre nom Joueur 1") #le joueur 1 choisis un nom
+        print("Entrez votre nom Joueur 1") #le joueur 1 choisis un nom
         joueur1 = input()
         print("Entrez votre nom Joueur 2") #le joueur 2 choisis un nom
         joueur2 = input()
@@ -38,7 +38,7 @@ while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l
                 for lettre in range(7):
                         if propls[lettre] == copy[lettre]:
                                 reponse[lettre] = mot[lettre]
-                                propls[lettre] = "."
+                                propls[lettre] = "!"
                 for lettre in range(7):
                         if propls[lettre] in copy:
                                 reponse[lettre] = propls[lettre].lower()
