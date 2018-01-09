@@ -28,6 +28,7 @@ while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l
         print("Mot validé")
 
         print("{0}, à toi".format(joueur2)) #c'est maintenant au joueur 2 de jouer
+        victoire = False
         for essais in range(6): #on créé une boucle avec 6 essais maximum
                 proposition = ""
                 reponse = ["."]*7
@@ -47,5 +48,8 @@ while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l
                 print("".join(reponse))
                 if "".join(reponse) == proposition: #on vérifie si la proposition après traitement est le mot qu'on doit deviner
                         print("Bien joué !")
+                        victoire = True
                         break
+        if victoire == False:
+                print("Vous avez échoué. La bonne réponse était {0}".format(mot))
         sortie = int(input("Voulez vous rejouer [1] ou quitter [0] ? ")) #On demande au joueur si on veut rejouer
