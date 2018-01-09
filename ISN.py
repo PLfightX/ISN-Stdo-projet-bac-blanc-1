@@ -14,6 +14,9 @@ def verif(mot): #on créé une fonction que vérifie si le mot est "correct": il
         else:
                 legit = False
         return legit #on retourne si le mot est correct ou non
+print("Bienvenue dans Motus !\n[1] - Jouer en 1v1\n[2] - Jouer en solo\n[3] - Options\n[4] - Quitter"
+
+
 
 sortie = 1
 while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l'on l'arr?te
