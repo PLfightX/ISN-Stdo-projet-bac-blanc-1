@@ -1,68 +1,114 @@
 #Python 3.6
 import getpass
+import random
 
 alphabet = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 def verif(mot): #on créé une fonction que vérifie si le mot est "correct": il fait 7 lettres de long et n'utilise que des lettres de l'alphabet
-        legit = True
-        if len(mot) == 7:
-                for loop in range(7):
-                        if mot[loop] in alphabet:
-                                pass
-                        else:
-                                legit = False
-        else:
+    legit = True
+    if len(mot) == 7:
+        for loop in range(7):
+            if mot[loop] in alphabet:
+                pass
+            else:
                 legit = False
-        return legit #on retourne si le mot est correct ou non
-print("Bienvenue dans Motus !\n[1] - Jouer en 1v1\n[2] - Jouer en solo\n[3] - Options\n[4] - Quitter")
-choix = int(input("Votre choix : "))
-if choix == 1:
-        multi()
-if choix == 2:
-        solo()
-if choix == 3:
-        options()
-if choix == 4:
-        raise SystemExit
-        
-
+    else:
+        legit = False
+    return legit #on retourne si le mot est correct ou non
 
 def multi():
-        sortie = 1
-        while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l'on l'arr?te
-                print("Entrez votre nom Joueur 1") #le joueur 1 choisis un nom
-                joueur1 = input()
-                print("Entrez votre nom Joueur 2") #le joueur 2 choisis un nom
-                joueur2 = input()
+    sortie = 1
+    print("Entrez votre nom Joueur 1") #le joueur 1 choisis un nom
+    joueur1 = input()
+    print("Entrez votre nom Joueur 2") #le joueur 2 choisis un nom
+    joueur2 = input()
+    while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l'on l'arr?te
+        
+        mot = ""
+        while not(verif(mot)): #le joueur 1 choisis un mot qu'on vérifie avec la fonction 'verif'
+            mot = getpass.getpass("{0} entre le mot de 7 lettres : ".format(joueur1)).upper()  #on utilise getpass pour ne pas afficher le mot
+        print("Mot validé")
 
-                mot = ""
-                while not(verif(mot)): #le joueur 1 choisis un mot qu'on vérifie avec la fonction 'verif'
-                        mot = getpass.getpass("{0} entre le mot de 7 lettres : ".format(joueur1)).upper()  #on utilise getpass pour ne pas afficher le mot
-                print("Mot validé")
+        print("{0}, à toi".format(joueur2)) #c'est maintenant au joueur 2 de jouer
+        victoire = False
+        for essais in range(6): #on créé une boucle avec 6 essais maximum
+            proposition = ""
+            reponse = ["."]*7
+            while not(verif(proposition)):
+                proposition = input("Votre proposition (7 lettres) : ").upper() #On demande au joueur une proposition de mot
+            propls = list(proposition)
+            copy = list(mot)
+            for lettre in range(7):
+                if propls[lettre] == copy[lettre]:
+                    reponse[lettre] = mot[lettre]
+                    propls[lettre] = "!"
+                    copy[lettre] = "."
+            for lettre in range(7):
+                if propls[lettre] in copy:
+                    reponse[lettre] = propls[lettre].lower()
+                    copy[copy.index(propls[lettre])] = "."
+            print("".join(reponse))
+            if "".join(reponse) == proposition: #on vérifie si la proposition après traitement est le mot qu'on doit deviner
+                print("Bien joué !")
+                victoire = True
+                break
+        if victoire == False:
+            print("Vous avez échoué. La bonne réponse était {0}".format(mot))
+        sortie = int(input("Voulez vous rejouer [1] ou quitter [0] ? ")) #On demande au joueur si on veut rejouer
 
-                print("{0}, à toi".format(joueur2)) #c'est maintenant au joueur 2 de jouer
-                victoire = False
-                for essais in range(6): #on créé une boucle avec 6 essais maximum
-                        proposition = ""
-                        reponse = ["."]*7
-                        while not(verif(proposition)):
-                                proposition = input("Votre proposition (7 lettres) : ").upper() #On demande au joueur une proposition de mot
-                        propls = list(proposition)
-                        copy = list(mot)
-                        for lettre in range(7):
-                                if propls[lettre] == copy[lettre]:
-                                        reponse[lettre] = mot[lettre]
-                                        propls[lettre] = "!"
-                                        copy[lettre] = "."
-                        for lettre in range(7):
-                                if propls[lettre] in copy:
-                                        reponse[lettre] = propls[lettre].lower()
-                                        copy[copy.index(propls[lettre])] = "."
-                        print("".join(reponse))
-                        if "".join(reponse) == proposition: #on vérifie si la proposition après traitement est le mot qu'on doit deviner
-                                print("Bien joué !")
-                                victoire = True
-                                break
-                if victoire == False:
-                        print("Vous avez échoué. La bonne réponse était {0}".format(mot))
-                sortie = int(input("Voulez vous rejouer [1] ou quitter [0] ? ")) #On demande au joueur si on veut rejouer
+def solo():
+    sortie = 1
+    print("Entrez votre nom") #le joueur 1 choisis un nom
+    joueur = input()
+    while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l'on l'arrète
+        listfile = open("list7.motus", "r")
+        liste = listfile.read().split("\n")
+        listfile.close()
+        mot = str(liste[random.randint(0, len(liste))]).upper()
+        
+        
+        print("Un mot a été choisi. {0}, à toi".format(joueur)) #c'est maintenant au joueur 2 de jouer
+        victoire = False
+        for essais in range(6): #on créé une boucle avec 6 essais maximum
+            proposition = ""
+            reponse = ["."]*7
+            while not(verif(proposition)):
+                proposition = input("Votre proposition (7 lettres) : ").upper() #On demande au joueur une proposition de mot
+            propls = list(proposition)
+            copy = list(mot)
+            for lettre in range(7):
+                if propls[lettre] == copy[lettre]:
+                    reponse[lettre] = mot[lettre]
+                    propls[lettre] = "!"
+                    copy[lettre] = "."
+            for lettre in range(7):
+                if propls[lettre] in copy:
+                    reponse[lettre] = propls[lettre].lower()
+                    copy[copy.index(propls[lettre])] = "."
+            print("".join(reponse))
+            if "".join(reponse) == proposition: #on vérifie si la proposition après traitement est le mot qu'on doit deviner
+                print("Bien joué {0} !".format(joueur))
+                victoire = True
+                break
+        if victoire == False:
+            print("Vous avez échoué. La bonne réponse était {0}".format(mot))
+        sortie = int(input("Voulez-vous rejouer [1] ou quitter [0] ? ")) #On demande au joueur si on veut rejouer
+
+def options():
+    print("Cette fonction n'est pas disponible, revenez plus tard ;-)")
+
+while True:
+    print("Bienvenue dans Motus !\n[1] - Jouer en 1v1\n[2] - Jouer en solo\n[3] - Options\n[4] - Quitter")
+    choix = int(input("Votre choix : "))
+    if choix == 1:
+        multi()
+    if choix == 2:
+        solo()
+    if choix == 3:
+        options()
+    if choix == 4:
+        raise SystemExit
+
+
+ 
+
