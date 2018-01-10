@@ -4,16 +4,16 @@ import random
 
 alphabet = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-def nbLettres():
+def readNbLettres():
     settingsFile = open("settings.conf", "r")
     settings = settingsFile.read()
     settingsFile.close()
     return int(settings)
 
-def verif(mot): #on créé une fonction que vérifie si le mot est "correct": il fait le bon nombre de lettres de long et n'utilise que des lettres de l'alphabet
+def verif(mot, nbLettres = readNbLettres()): #on créé une fonction que vérifie si le mot est "correct": il fait le bon nombre de lettres de long et n'utilise que des lettres de l'alphabet
     legit = True
-    if len(mot) == nbLettres():
-        for loop in range(nbLettres()):
+    if len(mot) == nbLettres:
+        for loop in range(nbLettres):
             if mot[loop] in alphabet:
                 pass
             else:
@@ -32,24 +32,24 @@ def multi():
         
         mot = ""
         while not(verif(mot)): #le joueur 1 choisis un mot qu'on vérifie avec la fonction 'verif'
-            mot = getpass.getpass("{0} entre le mot de {1} lettres : ".format(joueur1, nbLettres())).upper()  #on utilise getpass pour ne pas afficher le mot
+            mot = getpass.getpass("{0} entre le mot de {1} lettres : ".format(joueur1, readNbLettres())).upper()  #on utilise getpass pour ne pas afficher le mot
         print("Mot validé")
 
         print("{0}, à toi".format(joueur2)) #c'est maintenant au joueur 2 de jouer
         victoire = False
         for essais in range(6): #on créé une boucle avec 6 essais maximum
             proposition = ""
-            reponse = ["."]*nbLettres()
+            reponse = ["."]*readNbLettres()
             while not(verif(proposition)):
-                proposition = input("Votre proposition ({0} lettres) : ".format(nbLettres())).upper() #On demande au joueur une proposition de mot
+                proposition = input("Votre proposition ({0} lettres) : ".format(readNbLettres())).upper() #On demande au joueur une proposition de mot
             propls = list(proposition)
             copy = list(mot)
-            for lettre in range(nbLettres()):
+            for lettre in range(readNbLettres()):
                 if propls[lettre] == copy[lettre]:
                     reponse[lettre] = mot[lettre]
                     propls[lettre] = "!"
                     copy[lettre] = "."
-            for lettre in range(nbLettres()):
+            for lettre in range(readNbLettres()):
                 if propls[lettre] in copy:
                     reponse[lettre] = propls[lettre].lower()
                     copy[copy.index(propls[lettre])] = "."
@@ -72,26 +72,26 @@ def solo():
     print("Entrez votre nom") #le joueur 1 choisis un nom
     joueur = input()
     while sortie != 0: #on créé une boucle qui recommence le jeu jusqu'à ce que l'on l'arrète
-        listFile = open("list"+str(nbLettres())+".motus", "r")
+        listFile = open("list"+str(readNbLettres())+".motus", "r")
         liste = listFile.read().split("\n")
         listFile.close()
         mot = str(liste[random.randint(0, len(liste))]).upper()
         
-        print("Un mot de {0} lettres a été choisi. {1}, à toi de jouer".format(nbLettres(), joueur)) #c'est maintenant au joueur 2 de jouer
+        print("Un mot de {0} lettres a été choisi. {1}, à toi de jouer".format(readNbLettres(), joueur)) #c'est maintenant au joueur 2 de jouer
         victoire = False
         for essais in range(6): #on créé une boucle avec 6 essais maximum
             proposition = ""
-            reponse = ["."]*nbLettres()
+            reponse = ["."]*readNbLettres()
             while not(verif(proposition)):
-                proposition = input("Votre proposition ({0} lettres) : ".format(nbLettres())).upper() #On demande au joueur une proposition de mot
+                proposition = input("Votre proposition ({0} lettres) : ".format(readNbLettres())).upper() #On demande au joueur une proposition de mot
             propls = list(proposition)
             copy = list(mot)
-            for lettre in range(nbLettres()):
+            for lettre in range(readNbLettres()):
                 if propls[lettre] == copy[lettre]:
                     reponse[lettre] = mot[lettre]
                     propls[lettre] = "!"
                     copy[lettre] = "."
-            for lettre in range(nbLettres()):
+            for lettre in range(readNbLettres()):
                 if propls[lettre] in copy:
                     reponse[lettre] = propls[lettre].lower()
                     copy[copy.index(propls[lettre])] = "."
@@ -107,7 +107,7 @@ def solo():
 
 def options():
     while True:
-        print("OPTIONS\n[1] - Changer le nombre de lettres\n[2] - Retour")
+        print("OPTIONS\n[1] - Changer le nombre de lettres\n[2] - Ajouter un mot à la liste\n[3] - Retour")
         try:
             choix = int(input("Votre choix : "))
             if choix == 1:
@@ -128,6 +128,33 @@ def options():
                 settingsFile.write(str(nbLettres))
                 settingsFile.close()
             if choix == 2:
+                try:
+                    nbLettres = int(input("Combien de lettre le mot à ajouter a-t-il ? : "))
+                    if nbLettres <= 9 and nbLettres >= 6:
+                        print("Le mot ne peut contenir que les 26 lettres de l'alphabet")
+                        mot = input("Le mot à ajouter : ").upper()
+                        listFile = open("list"+str(nbLettres)+".motus", "r")
+                        liste = listFile.read()
+                        listFile.close()
+                        if mot.lower() in liste:
+                            print("Le mot existe déja !")
+                        else:
+                            try:
+                                if verif(mot, nbLettres):
+                                    mot = mot.lower()
+                                    listFile = open("list"+str(nbLettres)+".motus", "a")
+                                    listFile.write("\n"+mot)
+                                    listFile.close()
+                                    print("Mot Ajouté !")
+                                else:
+                                    print("Mot Incorrect !")
+                            except TypeError:
+                                print("Mot Incorrect !")
+                    else :
+                        print("Incorrect !")
+                except ValueError:
+                    print("Incorrect ! ")
+            if choix == 3:
                 break
         except ValueError:
             print("Incorrect !")
@@ -146,7 +173,3 @@ while True:
             raise SystemExit
     except ValueError:
         print("Incorrect !")
-
-
- 
-
